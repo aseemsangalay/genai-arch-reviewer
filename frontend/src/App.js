@@ -81,13 +81,6 @@ export default function App() {
         )}
       </main>
 
-      <footer className="app-footer">
-        <div className="footer-inner">
-          <span>Built by Aseem Sangalay</span>
-          <span className="footer-dot">·</span>
-          <span>GenAI Architecture Review · 2026</span>
-        </div>
-      </footer>
     </div>
   );
 }

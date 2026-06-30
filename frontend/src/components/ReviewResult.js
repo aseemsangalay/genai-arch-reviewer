@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "./ReviewResult.css";
 
 function ScoreBar({ score }) {
@@ -15,6 +15,49 @@ function ConfidenceBadge({ level }) {
   return <span className={`confidence-badge confidence-${level}`}>{level}</span>;
 }
 
+function ArchitectureDiagram({ mermaidSrc }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (!mermaidSrc || !ref.current) return;
+    let cancelled = false;
+
+    import("mermaid").then(({ default: mermaid }) => {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: "neutral",
+        themeVariables: {
+          primaryColor: "#f8f9fb",
+          primaryTextColor: "#111111",
+          primaryBorderColor: "#d1d5db",
+          lineColor: "#71717a",
+          secondaryColor: "#f3f4f6",
+          tertiaryColor: "#ffffff",
+          fontFamily: "Inter, -apple-system, sans-serif",
+          fontSize: "13px",
+        },
+      });
+      const id = `mermaid-${Date.now()}`;
+      mermaid.render(id, mermaidSrc).then(({ svg }) => {
+        if (!cancelled && ref.current) ref.current.innerHTML = svg;
+      }).catch(() => {});
+    });
+
+    return () => { cancelled = true; };
+  }, [mermaidSrc]);
+
+  if (!mermaidSrc) return null;
+
+  return (
+    <div className="diagram-section">
+      <h3 className="section-title">Architecture Map</h3>
+      <div className="diagram-wrap">
+        <div ref={ref} />
+      </div>
+    </div>
+  );
+}
+
 export default function ReviewResult({ result, onReset }) {
   const {
     assumptions = [],
@@ -25,6 +68,7 @@ export default function ReviewResult({ result, onReset }) {
     killer_insight = {},
     key_unresolved_decisions = [],
     review_confidence = null,
+    architecture_diagram = null,
   } = result;
 
   const scorecardLabels = {
@@ -41,19 +85,16 @@ export default function ReviewResult({ result, onReset }) {
           <h2 className="result-title">Architecture Review</h2>
           <span className="result-subtitle">Senior-level critique</span>
         </div>
-        <button className="reset-btn" onClick={onReset}>
-          ← New review
-        </button>
+        <button className="reset-btn" onClick={onReset}>← New review</button>
       </div>
 
-      {/* Review Confidence */}
       {review_confidence && (
         <section className="confidence-banner">
           <div className="confidence-banner-left">
             <span className="confidence-banner-label">Review Confidence</span>
             <span className="confidence-banner-score">{review_confidence.score}%</span>
           </div>
-          {review_confidence.missing && review_confidence.missing.length > 0 && (
+          {review_confidence.missing?.length > 0 && (
             <ul className="confidence-missing-list">
               {review_confidence.missing.map((m, i) => (
                 <li key={i} className="confidence-missing-item">{m}</li>
@@ -63,7 +104,6 @@ export default function ReviewResult({ result, onReset }) {
         </section>
       )}
 
-      {/* Killer Insight — visually distinct, first */}
       {killer_insight.insight && (
         <section className="killer-section">
           <div className="killer-label">Killer Insight</div>
@@ -74,7 +114,10 @@ export default function ReviewResult({ result, onReset }) {
         </section>
       )}
 
-      {/* Scorecard */}
+      {architecture_diagram?.mermaid && (
+        <ArchitectureDiagram mermaidSrc={architecture_diagram.mermaid} />
+      )}
+
       <section className="section">
         <h3 className="section-title">Scorecard</h3>
         <div className="scorecard-grid">
@@ -97,7 +140,6 @@ export default function ReviewResult({ result, onReset }) {
         </div>
       </section>
 
-      {/* Assumptions */}
       {assumptions.length > 0 && (
         <section className="section">
           <h3 className="section-title">Assumptions Made</h3>
@@ -109,7 +151,6 @@ export default function ReviewResult({ result, onReset }) {
         </section>
       )}
 
-      {/* Critical Risks */}
       {critical_risks.length > 0 && (
         <section className="section">
           <h3 className="section-title">Critical Risks</h3>
@@ -122,20 +163,16 @@ export default function ReviewResult({ result, onReset }) {
                 </div>
                 {r.trigger && (
                   <p className="risk-trigger">
-                    <span className="risk-trigger-label">Trigger: </span>
-                    {r.trigger}
+                    <span className="risk-trigger-label">Trigger: </span>{r.trigger}
                   </p>
                 )}
-                {r.reasoning && (
-                  <p className="risk-reasoning">{r.reasoning}</p>
-                )}
+                {r.reasoning && <p className="risk-reasoning">{r.reasoning}</p>}
               </div>
             ))}
           </div>
         </section>
       )}
 
-      {/* Strengths */}
       {strengths.length > 0 && (
         <section className="section">
           <h3 className="section-title">Strengths</h3>
@@ -147,7 +184,6 @@ export default function ReviewResult({ result, onReset }) {
         </section>
       )}
 
-      {/* Key Unresolved Decisions */}
       {key_unresolved_decisions.length > 0 && (
         <section className="section">
           <h3 className="section-title">Key Unresolved Decisions</h3>
@@ -159,7 +195,6 @@ export default function ReviewResult({ result, onReset }) {
         </section>
       )}
 
-      {/* Recommended Changes */}
       {recommended_changes.length > 0 && (
         <section className="section">
           <h3 className="section-title">Recommended Changes</h3>

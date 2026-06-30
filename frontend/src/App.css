@@ -11,12 +11,13 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  animation: fadeIn 300ms var(--ease-out) both;
 }
 
 .header-inner {
-  max-width: 960px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 40px;
   height: 56px;
   display: flex;
   align-items: center;
@@ -31,7 +32,7 @@
 
 .header-logo {
   font-size: 15px;
-  color: var(--accent);
+  color: var(--text-primary);
 }
 
 .header-title {
@@ -50,7 +51,7 @@
 }
 
 .header-contact:hover {
-  color: var(--accent);
+  color: var(--text-primary);
 }
 
 /* Main */
@@ -65,48 +66,6 @@
 }
 
 @media (max-width: 760px) {
-  .header-inner {
-    padding: 0 20px;
-  }
-
-  .app-main {
-    padding: 40px 20px 72px;
-  }
-
-  .header-tag {
-    display: none;
-  }
-}
-
-@media (min-width: 1400px) {
-  .app-main {
-    padding-top: 96px;
-  }
-}
-
-/* Footer */
-.app-footer {
-  border-top: 1px solid var(--border);
-  padding: 0 40px;
-}
-
-.footer-inner {
-  max-width: 1100px;
-  margin: 0 auto;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  color: var(--text-muted);
-}
-
-.footer-dot {
-  opacity: 0.4;
-}
-
-@media (max-width: 760px) {
-  .app-footer {
-    padding: 0 20px;
-  }
+  .header-inner { padding: 0 20px; }
+  .app-main { padding: 40px 20px 72px; }
 }

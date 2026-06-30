@@ -6,7 +6,7 @@
   width: 100%;
 }
 
-/* ── Left: intro ─────────────────────────────── */
+/* ── Left: intro ───────────────────── */
 .input-intro {
   display: flex;
   flex-direction: column;
@@ -20,28 +20,32 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.14em;
-  color: var(--accent);
+  color: var(--text-muted);
+  animation: fadeUp 500ms var(--ease-spring) 50ms both;
 }
 
 .input-heading {
-  font-size: 42px;
+  font-size: 44px;
   font-weight: 700;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.04em;
   line-height: 1.1;
   color: var(--text-primary);
+  animation: fadeUp 500ms var(--ease-spring) 120ms both;
 }
 
 .input-subheading {
   font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.75;
+  animation: fadeUp 500ms var(--ease-spring) 190ms both;
 }
 
 .intro-badges {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 9px;
+  margin-top: 8px;
+  animation: fadeUp 500ms var(--ease-spring) 260ms both;
 }
 
 .intro-badge {
@@ -58,16 +62,17 @@
   width: 4px;
   height: 4px;
   min-width: 4px;
-  background: var(--accent);
+  background: var(--text-muted);
   margin-top: 6px;
   flex-shrink: 0;
 }
 
-/* ── Right: form ─────────────────────────────── */
+/* ── Right: form ───────────────────── */
 .input-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  animation: fadeUp 500ms var(--ease-spring) 200ms both;
 }
 
 /* Demo block */
@@ -79,11 +84,12 @@
   padding: 18px 20px;
   border: 1px solid var(--border);
   background: var(--bg-subtle);
-  transition: border-color 150ms;
+  transition: border-color 200ms var(--ease-out), background 200ms var(--ease-out);
 }
 
 .demo-block:hover {
   border-color: var(--border-strong);
+  background: #f3f4f6;
 }
 
 .demo-block-left {
@@ -102,7 +108,6 @@
 .demo-desc {
   font-size: 12px;
   color: var(--text-muted);
-  line-height: 1.5;
 }
 
 .demo-btn {
@@ -110,25 +115,28 @@
   height: 34px;
   padding: 0 16px;
   background: var(--accent);
-  color: #ffffff;
+  color: #fff;
   border: none;
   font-family: var(--font);
   font-size: 12px;
   font-weight: 500;
   cursor: pointer;
   letter-spacing: 0.02em;
-  transition: background 150ms;
+  transition: background 150ms var(--ease-out), transform 150ms var(--ease-spring);
   white-space: nowrap;
+  will-change: transform;
 }
 
 .demo-btn:hover:not(:disabled) {
   background: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
-.demo-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.demo-btn:active:not(:disabled) {
+  transform: translateY(0);
 }
+
+.demo-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 /* Divider */
 .divider-row {
@@ -155,7 +163,7 @@
 .textarea-wrap {
   border: 1px solid var(--border-strong);
   background: var(--surface);
-  transition: border-color 150ms, box-shadow 150ms;
+  transition: border-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out);
 }
 
 .textarea-wrap:focus-within {
@@ -177,14 +185,9 @@
   min-height: 200px;
 }
 
-.input-textarea::placeholder {
-  color: var(--text-muted);
-}
+.input-textarea::placeholder { color: var(--text-muted); }
 
-.input-textarea:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+.input-textarea:disabled { opacity: 0.6; cursor: not-allowed; }
 
 .textarea-footer {
   display: flex;
@@ -210,6 +213,7 @@
   padding: 20px;
   border: 1px solid var(--border);
   background: var(--surface);
+  animation: fadeIn 250ms var(--ease-out) both;
 }
 
 .gate-desc {
@@ -218,10 +222,7 @@
   line-height: 1.55;
 }
 
-.gate-form {
-  display: flex;
-  gap: 8px;
-}
+.gate-form { display: flex; gap: 8px; }
 
 .gate-input {
   flex: 1;
@@ -234,7 +235,7 @@
   color: var(--text-primary);
   outline: none;
   letter-spacing: 0.06em;
-  transition: border-color 150ms, background 150ms;
+  transition: border-color 200ms var(--ease-out), box-shadow 200ms var(--ease-out), background 200ms;
 }
 
 .gate-input:focus {
@@ -258,35 +259,30 @@
   font-weight: 500;
   color: var(--text-primary);
   cursor: pointer;
-  transition: background 150ms, border-color 150ms;
+  transition: background 150ms, border-color 150ms, transform 150ms var(--ease-spring);
   white-space: nowrap;
+  will-change: transform;
 }
 
 .gate-btn:hover {
   background: var(--bg-subtle);
   border-color: var(--text-primary);
+  transform: translateY(-1px);
 }
 
-.gate-error {
-  font-size: 12px;
-  color: var(--risk-high);
-}
+.gate-btn:active { transform: translateY(0); }
 
-.gate-contact {
-  font-size: 12px;
-  color: var(--text-muted);
-}
+.gate-error { font-size: 12px; color: var(--risk-high); animation: fadeIn 200ms both; }
+
+.gate-contact { font-size: 12px; color: var(--text-muted); }
 
 .gate-link {
-  color: var(--accent);
+  color: var(--link);
   text-decoration: none;
   font-weight: 500;
 }
 
-.gate-link:hover {
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
+.gate-link:hover { text-decoration: underline; text-underline-offset: 2px; }
 
 /* Error */
 .error-banner {
@@ -296,30 +292,32 @@
   color: var(--risk-high);
   font-size: 13px;
   line-height: 1.5;
+  animation: fadeUp 250ms var(--ease-spring) both;
 }
 
 /* Submit */
 .submit-btn {
   height: 46px;
   background: var(--accent);
-  color: #ffffff;
+  color: #fff;
   border: none;
   font-family: var(--font);
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
   letter-spacing: 0.01em;
-  transition: background 150ms;
+  transition: background 150ms var(--ease-out), transform 150ms var(--ease-spring);
+  will-change: transform;
 }
 
 .submit-btn:hover:not(:disabled) {
   background: var(--accent-hover);
+  transform: translateY(-1px);
 }
 
-.submit-btn:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+.submit-btn:active:not(:disabled) { transform: translateY(0); }
+
+.submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .submit-hint {
   font-size: 11px;
@@ -328,32 +326,17 @@
   letter-spacing: 0.02em;
 }
 
-/* ── Responsive ───────────────────────────────── */
+/* ── Responsive ─────────────────────── */
 @media (max-width: 760px) {
   .input-panel {
     grid-template-columns: 1fr;
     gap: 40px;
   }
 
-  .input-intro {
-    position: static;
-  }
+  .input-intro { position: static; }
+  .input-heading { font-size: 36px; }
+  .intro-badges { display: none; }
 
-  .input-heading {
-    font-size: 36px;
-  }
-
-  .intro-badges {
-    display: none;
-  }
-
-  .demo-block {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .demo-btn {
-    width: 100%;
-    height: 40px;
-  }
+  .demo-block { flex-direction: column; align-items: flex-start; }
+  .demo-btn { width: 100%; height: 40px; }
 }

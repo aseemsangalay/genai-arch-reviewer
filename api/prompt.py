@@ -36,6 +36,7 @@ OUTPUT FORMAT: Return ONLY valid JSON. No prose before or after. No markdown fen
 
 Schema — follow exactly, do not add or remove fields:
 {
+  "architecture_diagram": {"mermaid": "graph LR\n  A[Component] --> B[Component]"},
   "assumptions": ["string — what you are inferring that the user did not state"],
   "scorecard": {
     "scalability": {"score": 1, "justification": "string"},
@@ -65,6 +66,8 @@ Schema — follow exactly, do not add or remove fields:
     "missing": ["string — a specific architectural detail not provided that would change the review."]
   }
 }
+
+architecture_diagram.mermaid must be a valid mermaid flowchart (graph LR) showing the main components and data flow from the user's description. Use the actual names they gave. 6-9 nodes max. If the input is too vague to draw a meaningful diagram, set architecture_diagram to null. Do not invent nodes the user did not mention.
 
 Scores are integers 1-5. critical_risks: 3-5 items. strengths: 2-3 items. recommended_changes: 3-5 items. key_unresolved_decisions: 3-5 items. review_confidence is REQUIRED on every response — do not omit it.
 
