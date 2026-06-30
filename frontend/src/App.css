@@ -6,8 +6,8 @@
 
 /* Header */
 .app-header {
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
+  border-bottom: 1px solid #2a2a2d;
+  background: #18181b;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -32,26 +32,26 @@
 
 .header-logo {
   font-size: 15px;
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 .header-title {
   font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 .header-contact {
   font-size: 12px;
-  color: var(--text-secondary);
+  color: #a1a1aa;
   text-decoration: none;
   font-weight: 500;
   transition: color 150ms;
 }
 
 .header-contact:hover {
-  color: var(--text-primary);
+  color: #ffffff;
 }
 
 /* Main */
