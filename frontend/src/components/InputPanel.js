@@ -25,11 +25,20 @@ export default function InputPanel({ input, setInput, onSubmit, onPreset, onDemo
   return (
     <div className="input-panel">
       <div className="input-intro">
-        <h1 className="input-heading">Architecture Review</h1>
+        <span className="input-eyebrow">Powered by Claude on AWS Bedrock</span>
+        <h1 className="input-heading">Senior-level critique,<br />instantly.</h1>
         <p className="input-subheading">
           Describe your GenAI system — RAG pipeline, agent workflow, LLM integration, or any AI architecture.
-          Get a structured senior-level critique: scorecard, risks, tradeoffs, and one standout insight.
+          Get a structured critique backed by real architectural judgment.
         </p>
+        <div className="intro-badges">
+          {["Scorecard across 4 dimensions", "Risks with confidence scores", "Concrete tradeoffs, no invented metrics", "One killer insight a mid-level would miss"].map((t) => (
+            <div key={t} className="intro-badge">
+              <span className="intro-badge-dot" />
+              <span>{t}</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="input-form">

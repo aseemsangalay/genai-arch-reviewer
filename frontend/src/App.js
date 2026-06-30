@@ -58,7 +58,7 @@ export default function App() {
             <span className="header-logo">◈</span>
             <span className="header-title">GenAI Architecture Review</span>
           </div>
-          <span className="header-tag">Powered by Claude on AWS Bedrock</span>
+          <a href="mailto:emailofaseem@gmail.com" className="header-contact">Request access</a>
         </div>
       </header>
 
@@ -80,6 +80,14 @@ export default function App() {
           />
         )}
       </main>
+
+      <footer className="app-footer">
+        <div className="footer-inner">
+          <span>Built by Aseem Sangalay</span>
+          <span className="footer-dot">·</span>
+          <span>GenAI Architecture Review · 2026</span>
+        </div>
+      </footer>
     </div>
   );
 }
