@@ -34,10 +34,11 @@ async def review(request: Request):
     try:
         result = invoke_model(user_input)
         return JSONResponse({"result": result})
-    except ValueError as e:
-        return JSONResponse({"error": f"ValueError: {e}"}, status_code=502)
+    except ValueError:
+        return JSONResponse({"error": "Model returned malformed output. Try again."}, status_code=502)
     except Exception as e:
-        return JSONResponse({"error": f"{type(e).__name__}: {e}"}, status_code=500)
+        print(f"invoke_model error: {e}")
+        return JSONResponse({"error": "Review failed. Try again."}, status_code=500)
 
 
 # Serve React static files — catch-all must come last
