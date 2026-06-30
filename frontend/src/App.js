@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import InputPanel from "./components/InputPanel";
 import ReviewResult from "./components/ReviewResult";
+import LoadingPanel from "./components/LoadingPanel";
 
 const CANONICAL = `I'm building a RAG-based customer support platform for 1M users, using OpenAI embeddings + Pinecone + GPT-4 for generation, expecting 10K daily active users, sub-2-second response requirement.`;
 
@@ -10,9 +11,10 @@ export default function App() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [unlocked, setUnlocked] = useState(false);
 
-  async function handleSubmit() {
-    if (!input.trim()) return;
+  async function submitInput(text) {
+    if (!text.trim()) return;
     setLoading(true);
     setError(null);
     setResult(null);
@@ -21,7 +23,7 @@ export default function App() {
       const res = await fetch("/api/review", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input: input.trim() }),
+        body: JSON.stringify({ input: text.trim() }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Review failed");
@@ -31,6 +33,15 @@ export default function App() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function handleSubmit() {
+    submitInput(input);
+  }
+
+  function handleDemoSubmit() {
+    setInput(CANONICAL);
+    submitInput(CANONICAL);
   }
 
   function handleReset() {
@@ -52,17 +63,21 @@ export default function App() {
       </header>
 
       <main className="app-main">
-        {!result ? (
+        {loading ? (
+          <LoadingPanel />
+        ) : result ? (
+          <ReviewResult result={result} onReset={handleReset} />
+        ) : (
           <InputPanel
             input={input}
             setInput={setInput}
             onSubmit={handleSubmit}
-            onPreset={() => setInput(CANONICAL)}
+            onDemoSubmit={handleDemoSubmit}
             loading={loading}
             error={error}
+            unlocked={unlocked}
+            onUnlock={() => setUnlocked(true)}
           />
-        ) : (
-          <ReviewResult result={result} onReset={handleReset} />
         )}
       </main>
     </div>
