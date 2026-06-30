@@ -4,27 +4,20 @@ import InputPanel from "./components/InputPanel";
 import ReviewResult from "./components/ReviewResult";
 import LoadingPanel from "./components/LoadingPanel";
 
-const CANONICAL = `I'm building a RAG-based customer support platform for 1M users, using OpenAI embeddings + Pinecone + GPT-4 for generation, expecting 10K daily active users, sub-2-second response requirement.`;
-
 export default function App() {
   const [input, setInput] = useState("");
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [accessCode, setAccessCode] = useState("");
   const [unlocked, setUnlocked] = useState(false);
 
-  async function submitInput(text) {
-    if (!text.trim()) return;
+  async function submitDemo() {
     setLoading(true);
     setError(null);
     setResult(null);
-
     try {
-      const res = await fetch("/api/review", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ input: text.trim() }),
-      });
+      const res = await fetch("/api/review/demo", { method: "POST" });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Review failed");
       setResult(data.result);
@@ -35,13 +28,33 @@ export default function App() {
     }
   }
 
-  function handleSubmit() {
-    submitInput(input);
-  }
-
-  function handleDemoSubmit() {
-    setInput(CANONICAL);
-    submitInput(CANONICAL);
+  async function submitCustom(text, code) {
+    if (!text.trim()) return;
+    setLoading(true);
+    setError(null);
+    setResult(null);
+    try {
+      const res = await fetch("/api/review", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Access-Code": code,
+        },
+        body: JSON.stringify({ input: text.trim() }),
+      });
+      const data = await res.json();
+      if (res.status === 401) {
+        setLoading(false);
+        return { invalidCode: true };
+      }
+      if (!res.ok) throw new Error(data.error || "Review failed");
+      setResult(data.result);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+    return {};
   }
 
   function handleReset() {
@@ -71,16 +84,18 @@ export default function App() {
           <InputPanel
             input={input}
             setInput={setInput}
-            onSubmit={handleSubmit}
-            onDemoSubmit={handleDemoSubmit}
+            accessCode={accessCode}
+            setAccessCode={setAccessCode}
+            onDemoSubmit={submitDemo}
+            onCustomSubmit={submitCustom}
             loading={loading}
             error={error}
+            setError={setError}
             unlocked={unlocked}
             onUnlock={() => setUnlocked(true)}
           />
         )}
       </main>
-
     </div>
   );
 }
